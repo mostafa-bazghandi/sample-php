@@ -44,7 +44,7 @@ class Database
             $stmt->execute([$value[0], $value[1]]);
         }
         $data = $stmt->fetchAll();
-        if(count($data) == 1){
+        if (count($data) == 1) {
             $data = $data[0];
         }
         $this->data = $data;
@@ -57,7 +57,7 @@ class Database
         // $stmt->bindParam(":$key",$value);
         $stmt->execute();
         $data = $stmt->fetchAll();
-        if(count($data) == 1){
+        if (count($data) == 1) {
             $data = $data[0];
         }
         $this->data = $data;
@@ -104,17 +104,41 @@ class Database
     }
     public function selectWithQuery($sql)
     {
-        try{
+        try {
 
             $stmt = $this->connection->prepare($sql);
             $stmt->execute();
             $data = $stmt->fetchAll();
-            if (count($data) == 1) {
-                $stmt = $this->connection->prepare($sql);
-                $stmt->execute();
-                $data = $stmt->fetch();
-            }
+            // if (count($data) == 1) {
+            //     $stmt = $this->connection->prepare($sql);
+            //     $stmt->execute();
+            //     $data = $stmt->fetch();
+            // }
             return $data;
+        } catch (PDOException $e) {
+            echo  $e->getMessage();
+            exit;
+        }
+    }
+    public function update($table, array $column, array $values,$id)
+    {
+        $columns = "";
+        $i = 0;
+        foreach ($column as $col) {
+            $i++;
+            if ($i == sizeof($column)) {
+                $col .= "=? ";
+                $columns .= $col;
+                break;
+            }
+            $col .= "=?, ";
+            $columns .= $col;
+        }
+        $this->quary = "UPDATE $table SET $columns WHERE id = $id";
+        try{
+            $stmt = $this->connection->prepare($this->quary);
+            $stmt->execute($values);
+            return true;
         }catch (PDOException $e) {
             echo  $e->getMessage();
             exit;

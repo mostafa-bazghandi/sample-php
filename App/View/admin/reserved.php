@@ -14,14 +14,13 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
             <tr>
                 <th>#</th>
                 <th>هتل</th>
+                <th>شهر</th>
                 <th>نام و نام خانوادگی</th>
-                <th>شماره تماس</th>
-                <th class="text-center">ایمیل</th>
-                <th>شماره ملی</th>
+                <th>شماره رزرو</th>
                 <th>تعداد اتاق</th>
                 <th>تعداد شب</th>
                 <th>پرداخت</th>
-                <th>تاریخ اقامت</th>
+                <th>تاریخ  رزرو برای اقامت</th>
                 <th class="text-center">تاریخ رزرو</th>
             </tr>
         </thead>
@@ -29,11 +28,13 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
             <?php foreach($data as $reserve){ ?>
             <tr>
                 <td><?= $reserve['id'] ?></td>
-                <td><?= $reserve['name'] ?></td>
-                <td><?= $reserve['lastname']?> <?= $reserve['user_name'] ?></td>
+                <td><?= $reserve['hotel'] ?></td>
+                <td><?= $reserve['city'] ?></td>
+                <td>
+                    <a href="/admin/user/<?= $reserve['user_id'] ?>"><i class="fa fa-eye bg-info p-1"></i></a>
+                    <?= $reserve['lastname']?> <?= $reserve['user_name'] ?>
+                </td>
                 <td><?= $reserve['phone_number'] ?></td>
-                <td><?= $reserve['email'] ?></td>
-                <td><?= $reserve['National_id_card'] ?></td>
                 <td><?= $reserve['number_of_rooms'] ?></td>
                 <td><?= $reserve['number_of_nights'] ?></td>
                 <td><?= $reserve['price'] ?></td>

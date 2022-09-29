@@ -5,6 +5,7 @@ require('../Core/Autoloader.php');
 include('../Core/config.php');
 include('../vendor/autoload.php');
 
+use App\Api\Api;
 use Core\Config;
 use Core\Helper;
 use Core\Application;
@@ -30,6 +31,22 @@ $app->routing->get('/reserve/{id}',[UserController::class,'reserveView']);
 $app->routing->post('/reserve/store',[UserController::class,'reserveStore']);
 $app->routing->get('/admin/reserved',[AdminController::class,'showReserved']);
 $app->routing->get('/admin/hotels',[AdminController::class,'showHotels']);
+$app->routing->get('/admin/hotel/create',[AdminController::class,'createHotels']);
+$app->routing->post('admin/hotel/store',[AdminController::class,'hotelStore']);
+$app->routing->get('/admin/hotels/{id}',[AdminController::class,'showHotel']);
+$app->routing->post('admin/hotel/edit/{id}',[AdminController::class,'editStore']);
+$app->routing->get('/admin/reserved/user/{id}',[AdminController::class,'reseredUser']);
+$app->routing->get('/admin/reserved/hotel',[AdminController::class,'hotelUsers']);
+$app->routing->get('/admin/user/{id}',[AdminController::class,'showUser']);
+$app->routing->get('/admin/cities',[AdminController::class,'showCities']);
+$app->routing->get('/admin/city/hotels/{id}',[AdminController::class,'showCityHotels']);
+$app->routing->get('/api/show/users',[Api::class,'showUsers']);
+$app->routing->post('/api/create/user',[Api::class,'createUser']);
+$app->routing->put('/api/update/user',[Api::class,'updateUser']);
+
+
+
+
 
 
 

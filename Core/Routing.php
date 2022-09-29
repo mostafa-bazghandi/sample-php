@@ -2,15 +2,25 @@
 
 namespace Core;
 
+use App\Api\Api;
 use Core\Request;
 
 class Routing
 {
+    public $params = [];
     protected array $routes = [];
     private Request $request;
+    public Api $api;
     public function __construct()
     {
         $this->request = new Request();
+        $this->checkApi();
+    }
+    public function checkApi()
+    {
+        if(preg_match('/api/',$_SERVER['REQUEST_URI'])){
+            $this->api = new Api();
+        }
     }
     public function get($path, $callback)
     {
@@ -19,6 +29,10 @@ class Routing
     public function post($path, $callback)
     {
         $this->routes['post'][$path] = $callback;
+    }
+    public function put($path, $callback)
+    {
+        $this->routes['put'][$path] = $callback;
     }
     public function getRouteMap($method): array
     {
@@ -61,8 +75,7 @@ class Routing
                     $values[] = $valueMatches[$i][0];
                 }
                 $routeParams = array_combine($routeNames, $values);
-
-
+                $this->params = $routeParams;
                 $this->request->setRouteParams($routeParams);
                 return $callback;
             }
@@ -88,7 +101,7 @@ class Routing
         if (is_array($callback)) {
             $callback[0] = new $callback[0]();
         }
-        return call_user_func($callback,(array) $this->request);
+        return call_user_func($callback,(array) $this->params);
     }
     public function renderview($view, $data,$data1)
     {

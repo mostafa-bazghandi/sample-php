@@ -8,13 +8,25 @@ class Helper
     {
         return Config::$BASE_PATH . '\public\\' . $url;
     }
-    public function saveimage($image)
+    public static function saveimage($image,$name = null)
     {
-        $targetFile = "../app/images";
-        if (move_uploaded_file($image['image']['tmp_name'], $targetFile)) {
-            return true;
-        } else {
-            echo " there was an error uploading your file.";
+        $imageFileType = strtolower(pathinfo($image['name'],PATHINFO_EXTENSION));
+        $targetFile =Config::$BASE_PATH.'\public\assets\app\images\\';
+        // Helper::dd(is_dir($targetFile));
+        if($name){
+            if (move_uploaded_file($image['tmp_name'], $targetFile.$name.'.'.$imageFileType)) {
+                return true;
+            } else {
+                echo " there was an error uploading your file.";
+                exit;
+            }
+        }else{
+            if (move_uploaded_file($image['tmp_name'], $targetFile.$image['name'])) {
+                return true;
+            } else {
+                echo " there was an error uploading your file.";
+                exit;
+            }
         }
     }
     public static function dd($value)

@@ -2,20 +2,24 @@
 
 namespace Core;
 
+use App\Api;
 use App\Controller\AuthController;
 use Core\Config;
 use Core\Helper;
 use Core\Request;
 use Core\Routing;
 use Core\Database;
+use App\Api\Read;
 
-class Application{
+class Application
+{
     public AuthController $auth;
     public Routing $routing;
     public Request $request;
     public Config $config;
     public Helper $helper;
     public Database $database;
+    // public Api $api;
     public static Application $app;
     public function __construct()
     {
@@ -25,7 +29,8 @@ class Application{
         $this->request = new Request();
         $this->config = new Config();
         $this->helper = new Helper();
-        self::$app=$this;
+        self::$app = $this;
+        // $this->api = new Api();
     }
     public function run()
     {
