@@ -110,9 +110,7 @@ class Database
             $stmt->execute();
             $data = $stmt->fetchAll();
             // if (count($data) == 1) {
-            //     $stmt = $this->connection->prepare($sql);
-            //     $stmt->execute();
-            //     $data = $stmt->fetch();
+            //     $data = $data[0];
             // }
             return $data;
         } catch (PDOException $e) {
@@ -138,6 +136,17 @@ class Database
         try{
             $stmt = $this->connection->prepare($this->quary);
             $stmt->execute($values);
+            return true;
+        }catch (PDOException $e) {
+            echo  $e->getMessage();
+            exit;
+        }
+    }
+    public function delete($table,$id,$value)
+    {
+        $this->quary = "DELETE FROM $table WHERE $id = ?";
+        try{
+            $this->connection->prepare($this->quary)->execute([$value]);
             return true;
         }catch (PDOException $e) {
             echo  $e->getMessage();

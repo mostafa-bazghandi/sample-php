@@ -6,7 +6,7 @@ include(Config::$BASE_PATH."\App\View\admin\layouts\header.php");
 include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
 ?>
 <div class="reserved-user">
-    <p>مشاهده هتل های رزرو شده توسط <strong>مصطفی</strong></p>
+    <p><strong><?= $data[0]['user_name'] ?? $data['user_name'] ?> <?= $data[0]['lastname'] ?? $data['lastname'] ?></strong>  مشاهده هتل های رزرو شده توسط </p>
 </div>
 <div class="table-container">
 
@@ -24,14 +24,16 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
         <tbody>
             <?php foreach($data as $reserved){ ?>
             <tr>
-                <td><?= $reserved['id'] ?></td>
-                <td><?= $reserved['hotel'] ?></td>
-                <td><?= $reserved['city'] ?></td>
-                <td><?= $reserved['number_of_rooms'] ?></td>
-                <td><?= $reserved['price'] ?></td>
-                <td><?= $reserved['created_at'] ?></td>
+                <td><?= $reserved['id'] ?? $data['id']?></td>
+                <td><?= $reserved['hotel'] ?? $data['hotel'] ?></td>
+                <td><?= $reserved['city'] ?? $data['city'] ?></td>
+                <td><?= $reserved['number_of_rooms'] ?? $data['number_of_rooms'] ?></td>
+                <td><?= $reserved['price'] ?? $data['price'] ?></td>
+                <td><?= $reserved['created_at'] ?? $data['created_at'] ?></td>
             </tr>
-            <?php } ?>
+            <?php if(empty($reserved['id'])){
+               break;
+            } } ?>
         </tbody>
     </table>
 </div>

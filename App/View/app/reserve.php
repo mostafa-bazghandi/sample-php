@@ -9,26 +9,26 @@ include (Config::$BASE_PATH) . '/app/view/app/layouts/header.php' ?>
 
     <div class="row">
         <div class="col-6">
-            <img src="../assets/app/images/hotel-3.jpg" class="image-reserve" alt="">
+            <img src="../assets/app/images/<?= $data[1][0]['picture'] ?>" class="image-reserve" alt="">
         </div>
         <div class="col-6" dir="rtl">
 
             <form action="/reserve/store" method="POST">
                 <div class="row">
                     <input name="user_id" type="text" hidden value="<?= $data[0]['id'] ?>">
-                    <input name="city_id" type="text" hidden value="<?= $data[1]['city_id'] ?>">
-                    <input name="hotel_id" type="text" hidden value="<?= $data[1]['hotel_id'] ?>">
+                    <input name="city_id" type="text" hidden value="<?= $data[1][0]['city_id'] ?>">
+                    <input name="hotel_id" type="text" hidden value="<?= $data[1][0]['hotel_id'] ?>">
                     <div class="col-6">
                         <label for="hotel">هتل</label>
-                        <input type="text" id="hotel" class="form-control shadow-none" value="<?= $data[1]['name'] ?>" readonly>
+                        <input type="text" id="hotel" class="form-control shadow-none" value="<?= $data[1][0]['name'] ?>" readonly>
                     </div>
                     <div class="col-6">
                     <label for="hotel">شهر</label>
-                        <input type="text" class="form-control shadow-none" value="<?= $data[1]['city'] ?>" readonly>
+                        <input type="text" class="form-control shadow-none" value="<?= $data[1][0]['city'] ?>" readonly>
                     </div>
                     <div class="col-6">
                     <label for="hotel">نام و نام خانوادگی</label>
-                        <input type="text" class="form-control shadow-none" value="<?= $data[0]['name'].' '. $data[0]['lastname'] ?>">
+                        <input type="text" class="form-control shadow-none" value="<?= $data[0]['user_name'].' '. $data[0]['lastname'] ?>">
                     </div>
                     <div class="col-6">
                     <label for="hotel">شماره تماس</label>
@@ -48,10 +48,10 @@ include (Config::$BASE_PATH) . '/app/view/app/layouts/header.php' ?>
                         </select>
                     </div>
                 </div>
-                <div class=" submit-reserve">
+                <div class="submit-reserve">
                     <div class="price-popular">
                         <p>قیمت با ازای 1 شب </p>
-                        <input name="price" class="price-input" type="text" value="<?=number_format($data[1]['price'],0,".",",") ?>تومان ">
+                        <input name="price" class="price-input" type="text" value="<?=number_format($data[1][0]['price'],0,".",",") ?>تومان ">
                     </div>
                     <div>
                         <button type="submit">ثبت</button>

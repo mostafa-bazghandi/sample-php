@@ -106,7 +106,7 @@ class Routing
     public function renderview($view, $data,$data1)
     {
         $view = str_replace(".", "/", $view);
-        include(Config::$BASE_PATH . "/App/View/$view.php");
+        include_once(Config::$BASE_PATH . "/App/View/$view.php");
     }
     public function error404($view)
     {

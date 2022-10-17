@@ -16,7 +16,7 @@ include (Config::$BASE_PATH) . '/app/view/app/layouts/header.php' ?>
 
                 <div class="card-hotel">
                     <a href="/reserve/<?= ($most_popular['id']) ?>">
-                        <img src="images/ghasr-talaee-mashhad.jpg" alt="">
+                        <img src="../assets/app/images/<?= $most_popular['picture'] ?>" alt="">
                         <div class="badge">
                             <?= $most_popular['discount'] ?>% تخفیف
                         </div>

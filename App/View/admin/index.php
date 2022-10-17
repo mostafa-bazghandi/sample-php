@@ -6,61 +6,72 @@
 
     // Application::$app->auth->checkAdmin();
     include(Config::$BASE_PATH . "\App\View\admin\layouts\header.php");
+    include(Config::$BASE_PATH . '\App\View\admin\layouts\sidebar.php');
+
     ?>
  <div class="container">
-     <div class="cards">
-         <a href="/admin/users">
-             <div class="card">
-                 <div class="card-item">
-                     <span><i class="fa fa-users" aria-hidden="true"></i></span>
-                     <div class="card-item-text">
-                         <p>تعداد کاربران</p>
-                         <h3><?= $data[0]['users'] ?></h3>
-                     </div>
-                 </div>
-             </div>
-         </a>
-         <a href="/admin/hotels">
-
-             <div class="card">
-                 <div class="card-item">
-                     <span style="background: yellow;"><i class="fa fa-hotel" aria-hidden="true" ;></i></span>
-                     <div class="card-item-text">
-
-                         <p>تعداد هتل ها</p>
-                         <h3><?= $data[0]['hotels'] ?></h3>
-                     </div>
-                 </div>
-             </div>
-         </a>
-         <a href="/admin/cities">
-
-             <div class="card">
-                 <div class="card-item">
-                     <span style="background: blue;"><i class="fa fa-city" aria-hidden="true" ;></i></span>
-                     <div class="card-item-text">
-                         <p>تعداد شهر ها </p>
-                         <h3><?= $data[0]['cities'] ?></h3>
-                     </div>
-                 </div>
-             </div>
-         </a>
-         <a href="/admin/reserved">
-
-             <div class="card">
-                 <div class="card-item">
-                     <span style="background: pink;"><i class="fa fa-hotel" aria-hidden="true" ;></i></span>
-                     <div class="card-item-text">
-                         <p>تعداد رزرو شده ها</p>
-                         <h3><?= $data[0]['reserved'] ?></h3>
-                     </div>
-                 </div>
-             </div>
-         </a>
+     <div class="info-home" dir="rtl">
+        <div class="info-item">
+            <div class="info-title">
+                <p>تعداد کاربران</p>
+            </div>
+            <div class="info-number">
+                <h2>12</h2>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-title">
+                <p>تعداد هتل ها</p>
+            </div>
+            <div class="info-number">
+                <h2>12</h2>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-title">
+                <p>تعداد رزور شده ها</p>
+            </div>
+            <div class="info-number">
+                <h2>12</h2>
+            </div>
+        </div>
+        <div class="info-item">
+            <div class="info-title">
+                <p>تعداد شهر ها</p>
+            </div>
+            <div class="info-number">
+                <h2>12</h2>
+            </div>
+        </div>
      </div>
  </div>
  </body>
  <script>
+     $(document).ready(function() {
+         load_data();
+
+         function load_data(query) {
+             $.ajax({
+                 url: "/admin/search/reserve",
+                 method: "POST",
+                 data: {
+                     query: query
+                 },
+                 success: function(data) {
+                     $("#resut").html(data)
+                 }
+             })
+         }
+         $("#searc").keyup(function() {
+             var search = $(this).val();
+             if (search != "" && $.isNumeric(search)) {
+                 load_data(search)
+             } else {
+                 $("#resut").html('please insert only number')
+                 // load_data();
+             }
+         })
+     })
      <?php include(Helper::asset("assets\admin\app.js")) ?>
  </script>
 

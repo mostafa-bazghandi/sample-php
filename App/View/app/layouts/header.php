@@ -18,7 +18,7 @@ use Core\Helper;
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/732338cc86.js" crossorigin="anonymous"></script>
+    <!-- <script src="https://kit.fontawesome.com/732338cc86.js" crossorigin="anonymous"></script> -->
     <link rel="stylesheet" href="../persianDatepicker/css/persianDatepicker-default.css">
     <script type="text/javascript" src="../persianDatepicker/js/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="../persianDatepicker/js/persianDatepicker.min.js"></script>
@@ -28,13 +28,23 @@ use Core\Helper;
 <body>
     <nav>
         <div class="menu-left">
-            <?php if(!isset($_SESSION['email'])){ ?>
-            <a href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
-            <span class="text-hover-login">ورود/ثبت نام</span>
-            <?php }elseif(isset($_SESSION['email'])){ ?>
-                <a href="/logout"><i class="fa fa-sign-out"></i></a>
-            <span class="text-hover-login">خروج</span>
-                <?php } ?>
+            <?php if (!isset($_SESSION['email'])) { ?>
+                <div class="logout">
+                    <a href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+                    <span class="text-hover-login">ورود/ثبت نام</span>
+                </div>
+            <?php } elseif (isset($_SESSION['email'])) {
+                $user = Application::$app->database->select("*", "users")->where(['email'], ['='], [$_SESSION['email']])->data;
+            ?>
+                <div class="info-header">
+                    <div class="logout">
+                        <a href="/logout"><i class="fa fa-sign-out"></i></a>
+                        <span class="text-hover-login">خروج</span>
+                    </div>
+                    <p><?= $user['user_name'];
+                        echo ' ' . $user['last_name'] ?></p>
+                </div>
+            <?php } ?>
         </div>
         <div class="menu-right">
             <div>

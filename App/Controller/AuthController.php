@@ -29,40 +29,46 @@ class AuthController extends Controller{
                 Helper::redirect_to("/admin/home");
             }else{
                 session_regenerate_id();
-                $_SESSION['user_id'] = $user[0]['id'];
-                $_SESSION['email'] = $user[0]['email'];
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['email'] = $user['email'];
                 Helper::redirect_to("/home");
             }
         }else{
             Helper::redirectBack();
-            Helper::message('login_error','email or password is worng');
+            Helper::message('login_error','ایمیل یا رمز عبور اشتباه می باشد');
         }
     }
     public function registerStore()
     {
-        $this->validate($_POST);
+
+        $this->validate();
 
     }
-    protected function validate($fields)
+    protected function validate()
     {
-        if(empty($fields['name']) || empty($fields['email']) || empty($fields['password']) || empty($fields['confirm-password'])){
-            Helper::redirectBack();
-            Helper::message('register_error','Please fill all inputs');
-        } elseif(strlen($fields['password']) < 8){
-            Helper::redirectBack();
-            Helper::message('register_error','Password must be at least 8 characters long');
-        }elseif ($fields['password'] != $fields['confirm-password']) {
-            Helper::redirectBack();
-            Helper::message('register_error','The confirm password does not match to password');
-        }elseif($this->is_exist_email($fields['email']) == false){
-            Helper::redirectBack();
-            Helper::message('register_error','Email is already registered');
+
+        if(empty($_POST['user_name']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['confirm_password']) || empty($_POST['last_name']) || empty($_POST['national_id_card']) || empty($_POST['phone_number'])){
+            echo 2;
+            exit;
+        } elseif(strlen($_POST['password']) < 8){
+            echo 3;
+            exit;
+        }elseif ($_POST['password'] != $_POST['confirm_password']) {
+            echo 4;
+            exit;
+        }elseif($this->is_exist_email($_POST['email']) == false){
+            echo 5;
+            exit;
         }else{
-            unset($fields['confirm-password']);
-            $fields['password'] = $this->hash_password($fields['password']);
-            $register = Application::$app->database->insert("users",array_keys($fields),array_values($fields));
+            unset($_POST['confirm_password']);
+            $_POST['password'] = $this->hash_password($_POST['password']);
+            $register = Application::$app->database->insert("users",array_keys($_POST),array_values($_POST));
             if($register){
-                Helper::redirect_to("/login");
+                echo true;
+                exit;
+            }else{
+                echo false;
+                exit;
             }
         }
     }
@@ -83,18 +89,17 @@ class AuthController extends Controller{
     {
         $user = Application::$app->database->select("*","users")->where(["email"],["="],[$email])->data;
         if($user){
-            $verify_password = password_verify($password,$user[0]['password']);
+            $verify_password = password_verify($password,$user['password']);
             if($verify_password){
                 return $user;
             }else{
                 return false;
             }
         }else{
-            Helper::message('login_error','No account found with this email');
+            Helper::message('login_error','هیچ اکانتی با این ایمیل یافت نشد');
             Helper::redirectBack();
             exit;
         }
-        // $password = password_verify($password);
         return Application::$app->database->select("*","users")->where(["email","password"],["=","="],[$email,$password])->data;
     }
     public function checkAdmin()
@@ -108,7 +113,7 @@ class AuthController extends Controller{
     {
         unset($_SESSION['admin'],$_SESSION['user_id'],$_SESSION['name'] );
         session_destroy();
-        Helper::redirect_to('/login');
+        Helper::redirect_to('/home');
         exit;
     }
 

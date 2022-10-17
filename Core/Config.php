@@ -15,6 +15,7 @@ class Config{
     public function __construct()
     {
         self::$BASE_PATH = dirname(__DIR__);
+        date_default_timezone_set('Asia/Tehran');
     }
 //or $_SERVER['REQUEST_URI']
 }

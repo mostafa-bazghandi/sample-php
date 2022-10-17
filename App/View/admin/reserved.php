@@ -9,6 +9,10 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
 
 <div class="table-container">
 
+            <input type="text" class="form-control w-25 m-2 text-center" id="search" placeholder="جست و جو بر اساس شماره رزرو">
+            <div id="error" class="ml-3 text-danger"></div>
+
+
     <table class="table table-striped" style="direction: rtl;">
         <thead>
             <tr>
@@ -24,24 +28,8 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
                 <th class="text-center">تاریخ رزرو</th>
             </tr>
         </thead>
-        <tbody>
-            <?php foreach($data as $reserve){ ?>
-            <tr>
-                <td><?= $reserve['id'] ?></td>
-                <td><?= $reserve['hotel'] ?></td>
-                <td><?= $reserve['city'] ?></td>
-                <td>
-                    <a href="/admin/user/<?= $reserve['user_id'] ?>"><i class="fa fa-eye bg-info p-1"></i></a>
-                    <?= $reserve['lastname']?> <?= $reserve['user_name'] ?>
-                </td>
-                <td><?= $reserve['phone_number'] ?></td>
-                <td><?= $reserve['number_of_rooms'] ?></td>
-                <td><?= $reserve['number_of_nights'] ?></td>
-                <td><?= $reserve['price'] ?></td>
-                <td><?= $reserve['reservation_date'] ?></td>
-                <td><?= $reserve['created_at'] ?></td>
-            </tr>
-            <?php } ?>
+        <tbody id="result">
+
         </tbody>
     </table>
 </div>
@@ -50,6 +38,38 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
 
 
 <script>
+    $(document).ready(function(){
+        load_data();
+        function load_data(query){
+            $.ajax({
+                    url: "/admin/search/reserved",
+                    method: "POST",
+                    data: {
+                        query: query
+                    },
+                    success: function (data){
+                        $("#result").html(data)
+                    }
+                })
+        }
+        $("#search").keyup(function(e){
+            var search = $(this).val()
+            if(search != "" && $.isNumeric(search)){
+
+                load_data(search);
+            }else{
+                load_data()
+                $("#error").html("")
+            }
+            if(!$.isNumeric(search)){
+                $("#error").html("please insert only number")
+            }
+            if(search == ""){
+                $("#error").html("")
+            }
+
+        })
+    })
     <?php include(Helper::asset("assets\admin\app.js")) ?>
 </script>
 </body>

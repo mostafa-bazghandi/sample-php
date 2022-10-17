@@ -26,10 +26,10 @@ include(Config::$BASE_PATH.'\App\View\admin\layouts\sidebar.php');
             <tr>
                 <td><?= $user['id'] ?></td>
                 <td><?= $user['user_name'] ?></td>
-                <td><?= $user['lastname'] ?></td>
+                <td><?= $user['last_name'] ?></td>
                 <td><?= $user['phone_number'] ?></td>
                 <td><?= $user['email'] ?></td>
-                <td><?= $user['National_id_card'] ?></td>
+                <td><?= $user['national_id_card'] ?></td>
                 <td><?= $user['creat_at'] ?></td>
             </tr>
             <?php } ?>
